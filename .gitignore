@@ -1,0 +1,53 @@
+# ----------------------------
+# Python cache / environment
+# ----------------------------
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+env/
+.venv/
+venv/
+
+# ----------------------------
+# Jupyter Notebooks
+# ----------------------------
+.ipynb_checkpoints/
+
+# ----------------------------
+# Machine Learning / Data
+# ----------------------------
+*.pkl
+*.joblib
+nltk_data/
+Data/
+
+# ----------------------------
+# Flask / Web templates
+# ----------------------------
+# (Usually templates/ and static/ are kept, so no ignore needed here)
+
+# ----------------------------
+# IDE / Editor configs
+# ----------------------------
+.vscode/
+*.code-workspace
+.idea/
+
+# ----------------------------
+# Logs / temporary files
+# ----------------------------
+*.log
+*.tmp
+*.swp
+
+# ----------------------------
+# Deployment / system files
+# ----------------------------
+.DS_Store
+Thumbs.db
+
+# ----------------------------
+# Environment / Secrets
+# ----------------------------
+.env
