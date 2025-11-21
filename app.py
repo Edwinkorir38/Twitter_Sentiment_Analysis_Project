@@ -4,6 +4,7 @@ import re
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import nltk
+import os
 
 # -------------------------
 # NLTK setup
@@ -30,7 +31,7 @@ log_reg = joblib.load("logistic_regression_model.pkl")
 xgb = joblib.load("xgb.pkl")
 
 # -------------------------
-# PREDICTION FUNCTION
+# PREDICTION FUNCTIONS
 # -------------------------
 def predict_sentiment_single(tweet, model="logistic"):
     cleaned = clean_text(tweet)
@@ -57,12 +58,10 @@ def predict_sentiment_batch(tweets, model="logistic"):
 # -------------------------
 app = Flask(__name__)
 
-# Main page
 @app.route("/", methods=["GET"])
 def home():
     return render_template("index.html")
 
-# Batch prediction endpoint
 @app.route("/predict_batch", methods=["POST"])
 def predict_batch():
     data = request.get_json()
@@ -71,9 +70,12 @@ def predict_batch():
     if not tweets:
         return jsonify({"predictions": []})
     predictions = predict_sentiment_batch(tweets, model)
-    # Return results as array of {tweet, predicted_sentiment}
     results = [{"tweet": t, "predicted_sentiment": p} for t, p in zip(tweets, predictions)]
     return jsonify({"predictions": results})
 
+# -------------------------
+# RENDER: REQUIRED PORT FIX
+# -------------------------
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)

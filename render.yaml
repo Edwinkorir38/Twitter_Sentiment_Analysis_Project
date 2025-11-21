@@ -3,5 +3,11 @@ services:
     name: Twitter_Sentiment_Analysis_Project
     env: python
     region: frankfurt
-    buildCommand: "pip install -r requirements.txt"
+
+    buildCommand: |
+      pip install -r requirements.txt
+      python -m nltk.downloader stopwords -d nltk_data/
+      python -m nltk.downloader wordnet -d nltk_data/
+      python -m nltk.downloader punkt -d nltk_data/
+
     startCommand: "gunicorn app:app"
