@@ -26,30 +26,38 @@ def clean_text(text):
 # -------------------------
 # LOAD MODELS + VECTORIZER
 # -------------------------
-vectorizer = joblib.load("vectorizer.pkl")
-log_reg = joblib.load("logistic_regression_model.pkl")
-xgb = joblib.load("xgb.pkl")
+try:
+    vectorizer = joblib.load("vectorizer.pkl")
+    log_reg = joblib.load("logistic_regression_model.pkl")
+    xgb = joblib.load("xgb.pkl")
+    print("Models loaded successfully.")
+except Exception as e:
+    print("MODEL LOADING ERROR:", str(e))
 
 # -------------------------
-# PREDICTION FUNCTIONS
+# PREDICTION HELPERS
 # -------------------------
 def predict_sentiment_single(tweet, model="logistic"):
     cleaned = clean_text(tweet)
     vec = vectorizer.transform([cleaned])
+
     if model == "logistic":
         pred_code = log_reg.predict(vec)[0]
     else:
         pred_code = xgb.predict(vec)[0]
+
     label_map = {0: "Negative", 1: "Neutral", 2: "Positive"}
     return label_map.get(pred_code, "Unknown")
 
 def predict_sentiment_batch(tweets, model="logistic"):
     cleaned_tweets = [clean_text(tweet) for tweet in tweets]
     vec = vectorizer.transform(cleaned_tweets)
+
     if model == "logistic":
         pred_codes = log_reg.predict(vec)
     else:
         pred_codes = xgb.predict(vec)
+
     label_map = {0: "Negative", 1: "Neutral", 2: "Positive"}
     return [label_map.get(code, "Unknown") for code in pred_codes]
 
@@ -67,14 +75,17 @@ def predict_batch():
     data = request.get_json()
     tweets = data.get("tweets", [])
     model = data.get("model", "logistic")
+
     if not tweets:
         return jsonify({"predictions": []})
+
     predictions = predict_sentiment_batch(tweets, model)
     results = [{"tweet": t, "predicted_sentiment": p} for t, p in zip(tweets, predictions)]
+
     return jsonify({"predictions": results})
 
 # -------------------------
-# RENDER: REQUIRED PORT FIX
+# RENDER PORT REQUIRED
 # -------------------------
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
