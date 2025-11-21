@@ -1,7 +1,7 @@
 # **Twitter Sentiment Analysis: Apple vs. Google Products**
 ![banner](Images/sentimental_analysis_image.jpg)
 
-Authors: Edwin Korir, Maryan Daud and Sarah Njoroge
+Author: Edwin Korir
 
 
 A Machine Learning Approach to Understanding Customer Sentiment
@@ -27,6 +27,9 @@ A Machine Learning Approach to Understanding Customer Sentiment
 9. Conclusion & Future Work
 
 10. Libraries & Tools
+
+11. Deployment
+
 
 ## **1. Project Overview**
 
@@ -285,16 +288,25 @@ python
 
 
 2. Install Dependencies:
+```
+bash
 
-**bash**
+pip install pandas numpy nltk scikit-learn xgboost matplotlib seaborn wordcloud
+```
 
-pip **install** pandas numpy nltk scikit-learn xgboost matplotlib seaborn wordcloud or pip **install** -r requirements
+ or
+ ```
+ bash
+
+  pip install -r requirements
+  ```
 
 3. Run the Notebook:
-
-**bash**
+```
+bash
 
  jupyter notebook Twitter_sentiment_Analysis_Notebook.ipynb
+ ```
 
 ### **Final Thoughts**
 
@@ -326,5 +338,75 @@ By addressing current limitations and applying these enhancements, we aim to bui
 Please review our full analysis in our **[Jupyter Notebook](Twitter_sentiment_Analysis_Notebook.ipynb)**
   or our presentation.
 
-For any additional questions, please contact **[Edwin Korir]**,**[Maryan Daud]**,**[Sarah Njoroge]**
+For any additional questions, please contact **[Edwin Korir]**
 
+## Deployment
+### Live Web App link
+
+https://twitter-sentiment-analysis-project-1.onrender.com
+
+### Local Deployment
+
+1. Clone repo:
+```
+bash 
+git clone https://github.com/Edwinkorir38/Twitter_Sentiment_Analysis_Project
+
+cd Twitter_Sentiment_Analysis_Project
+```
+
+
+
+2. Install dependencies:
+```
+bash
+
+pip install -r requirements.txt
+```
+
+
+3. Run Flask app:
+```
+bash
+
+python app.py
+```
+
+
+Or production mode:
+```
+bash
+
+gunicorn app:app
+
+```
+
+
+4. Access locally: http://127.0.0.1:5000
+
+### Batch Prediction Example:
+```
+bash
+curl -X POST http://127.0.0.1:5000/predict_batch \
+-H "Content-Type: application/json" \
+-d '{"tweets": ["I love my new iPhone!", "Google Maps keeps crashing"]}'
+```
+
+
+#### Notes:
+
+* NLTK downloads WordNet and stopwords on first run
+
+* Models are loaded at startup
+
+### **Contact**
+
+ **Author : Edwin Korir**
+
+ * **[Email](ekorir99@gmail.com)**
+
+ * **[LinkedIn](https://www.linkedin.com/in/edwin-korir-90a794382)**
+
+ * **[Github](https://github.com/Edwinkorir38)**
+
+* **[Jupyter Notebook](Twitter_sentiment_Analysis_Notebook.ipynb)**
