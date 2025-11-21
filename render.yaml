@@ -1,7 +1,7 @@
 services:
   - type: web
     name: Twitter_Sentiment_Analysis_Project
-    env: python-3.10.13
+    env: python
     region: frankfurt
     buildCommand: "pip install -r requirements.txt"
     startCommand: "gunicorn app:app"
