@@ -1,16 +1,27 @@
 from flask import Flask, request, render_template, jsonify
 import joblib
 import re
-from nltk.corpus import stopwords
-from nltk.stem import WordNetLemmatizer
-import nltk
 import os
+import nltk
 
 # -------------------------
-# NLTK setup
+# NLTK setup (preload to avoid lazy-loading errors)
 # -------------------------
 nltk.data.path.append("nltk_data")
+
+# Download if not already present
+for resource in ["wordnet", "stopwords"]:
+    try:
+        nltk.data.find(f"corpora/{resource}")
+    except LookupError:
+        nltk.download(resource)
+
+# Force WordNet to load fully
+from nltk.corpus import wordnet, stopwords
+_ = wordnet.words()  # preload WordNet
 stop_words = set(stopwords.words("english"))
+
+from nltk.stem import WordNetLemmatizer
 lemmatizer = WordNetLemmatizer()
 
 # -------------------------
@@ -85,7 +96,7 @@ def predict_batch():
     return jsonify({"predictions": results})
 
 # -------------------------
-# RENDER PORT REQUIRED
+# RENDER / HEROKU PORT
 # -------------------------
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
